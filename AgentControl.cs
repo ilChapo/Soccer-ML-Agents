@@ -63,7 +63,7 @@ public class AgentControl : Agent
 
     public override void OnEpisodeBegin() {
 
-        m_boundsRegulator = m_ResetParams.GetWithDefault("my_environment_parameter", 0.1f);
+        m_boundsRegulator = m_ResetParams.GetWithDefault("my_environment_parameter", 1f);
         ResetBall(m_ballRb);
         Academy.Instance.StatsRecorder.Add("Goal Ratio", m_ratio);
       //m_previousDistance = Vector3.Distance(m_ballRb.position, m_goalAreaPos);
@@ -88,7 +88,7 @@ public class AgentControl : Agent
          m_previousDistance = distance;
        }
        //Debug.Log(GetCumulativeReward());
-       if (this.StepCount > 500) {
+       if (this.StepCount > 1000) {
 
          playerBody.position = m_startingPosition;
          playerBody.rotation = m_startingRotation;
@@ -118,23 +118,45 @@ public class AgentControl : Agent
         {
             case 1:
                 vert = 1;
+                //transform.Translate(Vector3.forward * speed * Time.deltaTime);
+                playerBody.AddForce(transform.right * speed * 1.1f,
+                    ForceMode.VelocityChange);
                 break;
             case 2:
                 vert = -1;
+                playerBody.AddForce(transform.right * -speed * 0.75f,
+                    ForceMode.VelocityChange);
                 break;
             case 3:
-                horiz = 1;
+                //horiz = 1;
+                playerBody.AddForce(transform.forward * -speed *0.625f,
+                    ForceMode.VelocityChange);
                 break;
             case 4:
-                horiz = -1;
+                //horiz = -1;
+                playerBody.AddForce(transform.forward * speed *0.625f,
+                    ForceMode.VelocityChange);
                 break;
+            case 5:
+                //horiz = 1;
+                transform.Rotate(transform.up * 1f, Time.fixedDeltaTime * 400f);
+                break;
+            case 6:
+                //horiz = -1;
+                transform.Rotate(transform.up * -1f * 30, Time.fixedDeltaTime * 400f);
+                break;
+
+
         }
+
+
         //Debug.Log("vert" + vert);
         //Debug.Log("horiz" + horiz);
-        inputVector = new Vector3(horiz * speed * 0.5f, playerBody.velocity.y * 1.3f, vert >= 0 ? vert * speed * 0.8f : vert * 0.6f * speed);
-        transform.LookAt(transform.position + new Vector3(-inputVector.z, 0, inputVector.x));
+        //inputVector = new Vector3(horiz * speed * 0.5f, playerBody.velocity.y * 1.3f, vert >= 0 ? vert * speed * 0.8f : vert * 0.6f * speed);
+        //transform.LookAt(transform.position + new Vector3(inputVector.x, 0, inputVector.x));
+        //transform.LookAt(transform.position + new Vector3(inputVector.x, 0, 0));
 
-        playerBody.velocity = inputVector;
+
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -157,6 +179,14 @@ public class AgentControl : Agent
         {
             discreteActionsOut[0] = 2;
         }
+        else if (Input.GetKey(KeyCode.Q))
+        {
+            discreteActionsOut[0] = 6;
+        }
+        else if (Input.GetKey(KeyCode.E))
+        {
+            discreteActionsOut[0] = 5;
+        }
 
         /*inputVector = new Vector3(Input.GetAxis("Horizontal") * speed * 0.5f, playerBody.velocity.y * 1.3f, Input.GetAxis("Vertical") >= 0 ? Input.GetAxis("Vertical") * speed * 0.8f : Input.GetAxis("Vertical") * 0.6f * speed);
         transform.LookAt(transform.position + new Vector3(-inputVector.z, 0, inputVector.x));*/
@@ -167,7 +197,6 @@ public class AgentControl : Agent
     {
         /*inputVector = new Vector3(Input.GetAxis("Horizontal") * speed * 0.5f, playerBody.velocity.y * 1.3f, Input.GetAxis("Vertical") >= 0 ? Input.GetAxis("Vertical") * speed * 0.8f : Input.GetAxis("Vertical") * 0.6f * speed);
         transform.LookAt(transform.position + new Vector3(-inputVector.z, 0, inputVector.x));
-
         if (Input.GetButtonDown("Dash"))
         {
             Vector3 dashVelocity = Vector3.Scale(transform.forward, DashDistance * new Vector3((Mathf.Log(1f / (Time.deltaTime * playerBody.drag + 1)) / -Time.deltaTime), 0, (Mathf.Log(1f / (Time.deltaTime * playerBody.drag + 1)) / -Time.deltaTime)));
@@ -175,7 +204,7 @@ public class AgentControl : Agent
         }*/
 
     }
-    void FixedUpdate() {
+    void FixedUpdate() { //happens not every frame, 
 
         //playerBody.velocity = inputVector;
 

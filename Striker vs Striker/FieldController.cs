@@ -195,7 +195,7 @@ public class FieldController : MonoBehaviour
                 Debug.Log("goal purple");
 
               }
-              Debug.Log("GOAL "+ m_scoreP + "-" + m_scoreB);
+              Debug.Log("GOAL "+ m_scoreB + "-" + m_scoreP);
               break;
           case 2: //ball out
 

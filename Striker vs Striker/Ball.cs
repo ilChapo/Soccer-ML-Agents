@@ -40,5 +40,11 @@ public class Ball : MonoBehaviour
             fieldController.EndOfEpisode(2,1);
 
         }
+        else if (col.gameObject.CompareTag("ball_limits"))
+        {
+
+            fieldController.EndOfEpisode(2,1);
+
+        }
     }
 }

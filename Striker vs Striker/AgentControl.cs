@@ -103,7 +103,7 @@ public class AgentControl : Agent
        //Debug.Log("Distancia segons PREVIOUS distance: " + ballPreviousDistance);
        //Debug.Log("Distancia segons distance: " + distance);
 
-       if(((distance + 1f) < (ballPreviousDistance)) && (m_ballRb.velocity != Vector3.zero)) {
+       if(((distance + 1f) < (ballPreviousDistance)) && (m_ballRb.velocity != Vector3.zero) && (fieldController.lastTeamTouched == (int)team)) {
          AddReward(0.02f);
          ballPreviousDistance = distance;
          Debug.Log("bonus distancia team " + team + " distancia = " + distance);
@@ -131,11 +131,12 @@ public class AgentControl : Agent
     public void MoveAgent(ActionSegment<int> act)
     {
 
-        var action = act[0];
-        //var horiz = 0;
+        var action1 = act[0];
+        var action2 = act[1];
+                //var horiz = 0;
         //var vert = 0;
         //Debug.Log("accion" + act[0]);
-        switch (action)
+        switch (action1)
         {
             case 1:
                 //vert = 1;
@@ -158,11 +159,16 @@ public class AgentControl : Agent
                 playerBody.AddForce(transform.forward * speed *0.75f,
                     ForceMode.VelocityChange);
                 break;
-            case 5:
+
+
+        }
+        switch (action2)
+        {
+            case 1:
                 //horiz = 1;
                 transform.Rotate(transform.up * 1f, Time.fixedDeltaTime * 700f);
                 break;
-            case 6:
+            case 2:
                 //horiz = -1;
                 transform.Rotate(transform.up * -1f * 30, Time.fixedDeltaTime * 400f);
                 break;
@@ -199,13 +205,14 @@ public class AgentControl : Agent
         {
             discreteActionsOut[0] = 2;
         }
-        else if (Input.GetKey(KeyCode.Q))
+
+        if (Input.GetKey(KeyCode.Q))
         {
-            discreteActionsOut[0] = 6;
+            discreteActionsOut[1] = 2;
         }
         else if (Input.GetKey(KeyCode.E))
         {
-            discreteActionsOut[0] = 5;
+            discreteActionsOut[1] = 1;
         }
 
         /*inputVector = new Vector3(Input.GetAxis("Horizontal") * speed * 0.5f, playerBody.velocity.y * 1.3f, Input.GetAxis("Vertical") >= 0 ? Input.GetAxis("Vertical") * speed * 0.8f : Input.GetAxis("Vertical") * 0.6f * speed);

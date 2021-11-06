@@ -200,11 +200,11 @@ public class FieldController : MonoBehaviour
           case 2: //ball out
 
               if (lastTeamTouched == 0) {
-                m_BlueAgentGroup.AddGroupReward(-0.05f);
+                m_BlueAgentGroup.AddGroupReward(-0.1f);
                 Debug.Log("Out from team blue");
 
               } else {
-                m_PurpleAgentGroup.AddGroupReward(-0.05f);
+                m_PurpleAgentGroup.AddGroupReward(-0.1f);
                 Debug.Log("Out from team purple");
               }
               break;

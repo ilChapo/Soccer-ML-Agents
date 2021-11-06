@@ -104,10 +104,15 @@ public class AgentControl : Agent
        //Debug.Log("Distancia segons distance: " + distance);
 
        if(((distance + 1f) < (ballPreviousDistance)) && (m_ballRb.velocity != Vector3.zero) && (fieldController.lastTeamTouched == (int)team)) {
-         AddReward(0.02f);
-         ballPreviousDistance = distance;
-         Debug.Log("bonus distancia team " + team + " distancia = " + distance);
-       }
+            AddReward(0.003f);
+            ballPreviousDistance = distance;
+            if((int)team == 0) {Debug.Log("bonus distancia team " + team + " distancia = " + distance); }
+          }
+       if(((distance) > (ballPreviousDistance + 1f)) && (m_ballRb.velocity != Vector3.zero)) {
+               AddReward(-0.003f);
+               ballPreviousDistance = distance;
+               if ((int)team == 0) {Debug.Log("bonus distancia team NEGATIU " + team + " distancia = " + distance);}
+             }
        //Debug.Log(GetCumulativeReward());
        // if (this.StepCount > 1000) {
        //
@@ -206,11 +211,11 @@ public class AgentControl : Agent
             discreteActionsOut[0] = 2;
         }
 
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             discreteActionsOut[1] = 2;
         }
-        else if (Input.GetKey(KeyCode.E))
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
             discreteActionsOut[1] = 1;
         }

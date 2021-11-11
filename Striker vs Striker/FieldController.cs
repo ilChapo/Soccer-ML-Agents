@@ -34,6 +34,8 @@ public class FieldController : MonoBehaviour
 
     [HideInInspector]
     public int lastTeamTouched = 100;
+    [HideInInspector]
+    public float reward_shaper;
 
 
     private SimpleMultiAgentGroup m_BlueAgentGroup;
@@ -100,6 +102,7 @@ public class FieldController : MonoBehaviour
         }
 
         m_boundsRegulator = m_ResetParams.GetWithDefault("my_environment_parameter", 1f);
+        reward_shaper = m_ResetParams.GetWithDefault("reward_shaper", 0.003f);
 
         //Debug.Log("lastTeamTouched " + lastTeamTouched );
     }
@@ -186,26 +189,26 @@ public class FieldController : MonoBehaviour
 
                 m_BlueAgentGroup.AddGroupReward(1f);
                 m_PurpleAgentGroup.AddGroupReward(-1f);
-                Debug.Log("goal blue");
+                //Debug.Log("goal blue");
 
               } else {
 
                 m_PurpleAgentGroup.AddGroupReward(1f);
                 m_BlueAgentGroup.AddGroupReward(-1f);
-                Debug.Log("goal purple");
+                //Debug.Log("goal purple");
 
               }
-              Debug.Log("GOAL "+ m_scoreB + "-" + m_scoreP);
+              //Debug.Log("GOAL "+ m_scoreB + "-" + m_scoreP);
               break;
           case 2: //ball out
 
               if (lastTeamTouched == 0) {
                 m_BlueAgentGroup.AddGroupReward(-0.1f);
-                Debug.Log("Out from team blue");
+                //Debug.Log("Out from team blue");
 
               } else {
                 m_PurpleAgentGroup.AddGroupReward(-0.1f);
-                Debug.Log("Out from team purple");
+                //Debug.Log("Out from team purple");
               }
               break;
           case 3: //player out

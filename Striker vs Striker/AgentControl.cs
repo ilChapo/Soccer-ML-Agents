@@ -87,7 +87,7 @@ public class AgentControl : Agent
         //Academy.Instance.StatsRecorder.Add("Goal Ratio", m_ratio);
       //ballPreviousDistance = Vector3.Distance(m_ballRb.position, goalAreaPos);
 
-      Debug.Log("New episode");
+      //Debug.Log("New episode");
 
     }
 
@@ -104,14 +104,14 @@ public class AgentControl : Agent
        //Debug.Log("Distancia segons distance: " + distance);
 
        if(((distance + 1f) < (ballPreviousDistance)) && (m_ballRb.velocity != Vector3.zero) && (fieldController.lastTeamTouched == (int)team)) {
-            AddReward(0.003f);
+            AddReward((float)fieldController.reward_shaper);
             ballPreviousDistance = distance;
-            if((int)team == 0) {Debug.Log("bonus distancia team " + team + " distancia = " + distance); }
+            if((int)team == 0) {Debug.Log("bonus distancia team " + team + " distancia = " + distance + "reward shaper" + (float)fieldController.reward_shaper); }
           }
        if(((distance) > (ballPreviousDistance + 1f)) && (m_ballRb.velocity != Vector3.zero)) {
-               AddReward(-0.003f);
+               AddReward((float)fieldController.reward_shaper*-1f);
                ballPreviousDistance = distance;
-               if ((int)team == 0) {Debug.Log("bonus distancia team NEGATIU " + team + " distancia = " + distance);}
+               if ((int)team == 0) {Debug.Log("bonus distancia team NEGATIU " + team + " distancia = " + distance + "reward shaper" + (float)fieldController.reward_shaper*-1f);}
              }
        //Debug.Log(GetCumulativeReward());
        // if (this.StepCount > 1000) {
@@ -257,7 +257,7 @@ public class AgentControl : Agent
 
     void OnCollisionEnter (Collision c) {
       if (c.gameObject.CompareTag("ball")) {
-        Debug.Log("xd");
+        //Debug.Log("xd");
 
         fieldController.lastTeamTouched = (int)team;
 
